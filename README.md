@@ -1,0 +1,2 @@
+# yahoo_hour_scrapy
+以Scrapy框架進行Yahoo新聞的資料收錄，根據完成時間收錄近一小時的新聞文章。
