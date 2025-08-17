@@ -1,6 +1,20 @@
-# Yahoo 一小時內新聞收錄（Scrapy + Selenium）
+# 🕷️ Yahoo 一小時內新聞收錄（Scrapy + Selenium）
 
-以 **Scrapy** + **scrapy-selenium** 收錄 Yahoo 新聞在「執行當下往回 1 小時內」的文章，輸出欄位：`連結, 標題, 作者, 日期`。  
+以 **Scrapy** + **scrapy-selenium** 收錄 Yahoo 新聞在「執行當下往回 1 小時內」的文章    
+輸出欄位：`連結`、`標題`、`作者`、`日期`。  
 Spider 名稱：`yahoo_hour`；入口頁：`https://tw.news.yahoo.com/archive/`。
 
+<br>
 
+## 📝 開發筆記（Implementation Notes）
+
+- 首屏 **20 筆**，隨捲動每次再增加 20 筆；因此採用「**邊捲動邊收集**」策略，避免虛擬化列表替換節點造成遺漏。
+- 當列表掃描到文字 **「X 小時前」**（含 **「約 1 小時前」**）的卡片，即視為已跨一小時界線，停止載入更多。
+- **防呆與去重**：全域最長 90 秒、最多捲動 400 次、連續無新內容 3 次即停止；以 URL `seen` 集合去重。
+- **雙層篩選**  
+  - 列表層：偵測到「≥ 1 小時前」就停止繼續載入。  
+  - 內文層：以 `<time datetime>` 嚴格過濾 1 小時內文章，避免誤收。
+
+<br>
+
+**這是我的 Scrapy × Selenium 初登場🌅：若有疏漏，敬請指正；歡迎 Issue／PR 🤝** 
